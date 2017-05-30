@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour {
     void Update () {
         if (CrossPlatformInputManager.GetButtonDown("Fire1"))
         {
-            shootBehaviour.Shoot(15, arrow);
+            shootBehaviour.Shoot(45, arrow);
             inAir = true;
         }
 	}

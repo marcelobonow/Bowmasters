@@ -7,10 +7,10 @@ public class ShootingBehaviour : MonoBehaviour {
     [SerializeField]
     private GameObject arrow;
     [SerializeField]
-    private float angle;
+    private float bowAngle;
 
     [SerializeField]
-    private float shootPower = 100;
+    private float shootPower = 1000;
     [SerializeField]
     private Sprite[] bowPositions;
     [SerializeField]
@@ -37,9 +37,8 @@ public class ShootingBehaviour : MonoBehaviour {
         }
         else
             Debug.Log("Remover esta linha");
-        arrowRigidBody.AddForce(new Vector2(-Mathf.Cos(angle) * shootPower,
-            -Mathf.Sin(angle) * shootPower));
+        arrowRigidBody.AddForce(new Vector2(Mathf.Cos(_angle * Mathf.Deg2Rad) * shootPower, Mathf.Sin(_angle * Mathf.Deg2Rad) * shootPower));
         arrowRigidBody.simulated = true;
-        _arrow.transform.Rotate(0, 0, angle - OFFSET);
+        //_arrow.transform.Rotate(0, 0, _angle - OFFSET);
     }
 }
