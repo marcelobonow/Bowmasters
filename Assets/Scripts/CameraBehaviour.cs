@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using System.Collections;
 
-public class FollowArrow : MonoBehaviour {
+public class CameraBehaviour : MonoBehaviour {
 
     private const float ZCAMERA = -10;
 
@@ -12,7 +13,6 @@ public class FollowArrow : MonoBehaviour {
     private Transform startPointPlayer;
     [SerializeField]
     private Transform startPointEnemy;
-    private float moveTimer;
 
     private void Start()
     {
@@ -30,21 +30,26 @@ public class FollowArrow : MonoBehaviour {
         //se esta em um dos turnos de mirar do player ou do inimigo a camera vai para as posições pre-definidas
         else if(GameManager.staticStage == GameManager.Stage.Player && !inPosition)
         {
-            moveTimer += Time.deltaTime;
-            transform.position = new Vector3(Mathf.Lerp(transform.position.x, startPointPlayer.transform.position.x, moveTimer/3),
-                Mathf.Lerp(transform.position.y, startPointPlayer.transform.position.y, moveTimer/3), ZCAMERA);
-            inPosition = moveTimer > 1;//mostrar o inimigo e depois voltar para o player
+            inPosition = true;
+            StartCoroutine(SmoothFollow(startPointPlayer.transform.position));
         }
         else if(GameManager.staticStage == GameManager.Stage.Enemy && !inPosition)
         {
-            moveTimer += Time.deltaTime;
-            transform.position = new Vector3(Mathf.Lerp(transform.position.x, startPointEnemy.transform.position.x, moveTimer/3),
-                Mathf.Lerp(transform.position.y, startPointEnemy.transform.position.y, moveTimer/3), ZCAMERA);
-            inPosition = moveTimer > 1;
-        }
-        if (inPosition)
-        {
-            moveTimer = 0;
+            inPosition = true;
+            StartCoroutine(SmoothFollow(startPointEnemy.transform.position));
         }
 	}
+    IEnumerator SmoothFollow(Vector2 position)
+    {
+        float moveTimer = 0;
+        while(moveTimer<1)
+        {
+            moveTimer += Time.deltaTime;
+            transform.position = new Vector3(Mathf.Lerp(transform.position.x, position.x, moveTimer / 10),
+                Mathf.Lerp(transform.position.y, position.y, moveTimer / 10), ZCAMERA);
+            yield return new WaitForEndOfFrame();
+        }
+        GameManager.enemyCanShoot = true;
+        inPosition = true;
+    }
 }

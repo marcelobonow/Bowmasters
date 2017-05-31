@@ -8,20 +8,23 @@ public class GameManager : MonoBehaviour {
     public static GameObject arrow;
     public static float angle;
     public static float shotPower;
-    public static bool enemyCanShoot;
+    public static bool enemyCanShoot; //É colocada como verdadeira quando a camera esta em posição e quando o player estiver setado
 
     [SerializeField]
-    private GameObject Player_Arrow;    //Pode ser um vetor de flechas diferentes, com danos diferentes, por exemplo
+    private GameObject playerArrow;   //Pode ser um vetor de flechas diferentes, com danos diferentes, por exemplo
+    [SerializeField]
+    private GameObject enemyArrow;
     [SerializeField]
     private GameManager gameManager;
     [SerializeField]
-    private BowBehaviour bowBehaviour;
-    [SerializeField]
     private float timer;
+    [SerializeField]
+    private BowBehaviour bowBehaviour; //Muda entre o bow do player e do inimigo
     [SerializeField]
     private IABehaviour iaBehaviour;
     public static Stage staticStage; //Static é apenas para leitura
     private Stage stage; //enquanto este é para a escrita
+
 
     private void Awake()
     {
@@ -31,33 +34,43 @@ public class GameManager : MonoBehaviour {
     }
     public void SetPlayer()
     {
-        arrow = Player_Arrow;
+        arrow = playerArrow;
         enemyCanShoot = false;
         arrow = Instantiate(arrow);
         GameObject playerBow= GameObject.Find("PlayerBow");
         playerBow.transform.eulerAngles = new Vector3(0, 0, 0);
         arrow.transform.SetParent(playerBow.transform);
         arrow.GetComponent<ArrowBehaviour>().gameManager = this;
-        bowBehaviour.SetBow(0);
+        arrow.GetComponent<ArrowBehaviour>().enabled = true;
+        playerBow.GetComponent<BowBehaviour>().SetBow(0);
         InputManager.hasSnap = false;
         timer = 0;
     }
+    public void SetEnemy()
+    {
+        //arrow = enemyArrow;
+        //arrow = Instantiate(arrow);
+        //GameObject enemyBow = GameObject.Find("EnemyBow");
+        //enemyBow.transform.eulerAngles = new Vector3(0, 0, 0);
+        //arrow.transform.SetParent(enemyBow.transform);
+        //arrow.GetComponent<ArrowBehaviour>().gameManager = this;
+        //arrow.GetComponent<ArrowBehaviour>().enabled = true;
+        //bowBehaviour.SetBow(0);
+        //InputManager.hasSnap = false;
+        //timer = 0;
+    }
     private void FixedUpdate()
     {
-        if(stage == Stage.Enemy && FollowArrow.inPosition) //Passagem do turno do tiro do player para inimigo atirar
-        {
-            enemyCanShoot = true;
-        }
             SetZoom(stage);
         if (InputManager.hasSnap && stage == Stage.Player)
         {
-            if (shotPower < 10)
+            if (shotPower < 1)
                 bowBehaviour.SetBow(0);
-            else if (shotPower >= 10 && shotPower < 50)
+            else if (shotPower >= 1 && shotPower < 5)
                 bowBehaviour.SetBow(1);
-            else if (shotPower >= 50 && shotPower < 100)
+            else if (shotPower >= 5 && shotPower < 10)
                 bowBehaviour.SetBow(2);
-            else if (shotPower >= 100 && shotPower < 150)
+            else if (shotPower >= 10 && shotPower < 15)
                 bowBehaviour.SetBow(3);
             else
                 bowBehaviour.SetBow(4);
@@ -95,8 +108,6 @@ public class GameManager : MonoBehaviour {
     {
         if (_stage == Stage.Player)
             SetPlayer();
-        //if(_stage == Stage.Enemy)
-            //SetEnemy();
         stage = _stage;
         staticStage = stage;
     }

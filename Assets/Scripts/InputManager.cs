@@ -29,19 +29,22 @@ public class InputManager : MonoBehaviour {
             {
                 //Angulo é calculado pela diferença no eixo y e a força na diferença do eixo x
                 Vector3 newMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                float angle = (snapPosition.y - newMousePosition.y) * 20;
-                float shotPower = (snapPosition.x - newMousePosition.x)*200;
-                if (shotPower > 200)
-                    shotPower = 200;
+                float angle = (snapPosition.y - newMousePosition.y) * 20; //mudar depois
+                float shotPower = (snapPosition.x - newMousePosition.x)*20;
+                if (shotPower > 20)
+                    shotPower = 20;
                 GameManager.SetAngle(angle);
                 GameManager.SetShotPower(shotPower);
             }
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
                 hasSnap = false;
-                gameManager.SetStage(GameManager.Stage.playershot); // Passagem da rodada de jogador atirar para tiro do jogador
-                GameManager.arrow.GetComponent<ArrowBehaviour>().enabled = true;
-                ShootingBehaviour.Shot(GameManager.shotPower, GameManager.angle, GameManager.arrow);
+                if(GameManager.shotPower >= 2)
+                {
+                    gameManager.SetStage(GameManager.Stage.playershot); // Passagem da rodada de jogador atirar para tiro do jogador
+                    GameManager.arrow.GetComponent<ArrowBehaviour>().enabled = true;
+                    ShootingBehaviour.Shot(GameManager.shotPower, GameManager.angle, GameManager.arrow);
+                }
             }
         }
     }
