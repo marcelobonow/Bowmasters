@@ -25,25 +25,20 @@ public class ArrowBehaviour : MonoBehaviour {
 	}
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        gameObject.GetComponent<Collider2D>().isTrigger = true;
+        transform.position += new Vector3(0.1f, -0.1f); //Enterra a flecha no alvo
+        rigidBody.velocity = new Vector2(0, 0);
+        rigidBody.simulated = false;
+        rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
+        gameObject.transform.SetParent(collision.transform);
+        //restart();
         if(collision.CompareTag("Player"))
         {
-            gameObject.GetComponent<Collider2D>().isTrigger = true;
-            transform.position += new Vector3(0.1f, -0.1f); //Enterra a flecha no alvo
-            rigidBody.velocity = new Vector2(0, 0);
-            rigidBody.simulated = false;
-            rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
-            gameObject.transform.SetParent(collision.transform);
             collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(10f, 0));
             GameManager.actualStage = GameManager.actualStage == GameManager.Stages.playershot ? GameManager.Stages.enemy : GameManager.Stages.Player;
         }
         if(collision.CompareTag("Ground"))
         {
-            gameObject.GetComponent<Collider2D>().isTrigger = true;
-            transform.position += new Vector3(0.1f, -0.1f); //Enterra a flecha no alvo
-            rigidBody.velocity = new Vector2(0, 0);
-            rigidBody.simulated = false;
-            rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
-            gameObject.transform.SetParent(collision.transform);
             GameManager.actualStage = GameManager.actualStage == GameManager.Stages.playershot ? GameManager.Stages.enemy : GameManager.Stages.Player; 
         }
     }

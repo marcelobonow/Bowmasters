@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
     public static float angle;
     public static float shotPower;
     public static bool enemyCanShoot;
+    public GameObject arrowPlayerPrefab;
+    public GameObject arrowEnemyPrefab;
     [SerializeField]
     private ShootingBehaviour shootBehaviour;
     [SerializeField]
@@ -23,7 +25,9 @@ public class GameManager : MonoBehaviour {
     {
         actualStage = Stages.Player;
         enemyCanShoot = false;
-        arrow = GameObject.Find("Arrow"); //Apagar esta linha e descomentar a próxima
+        arrow = Instantiate(arrowPlayerPrefab);
+        arrow.transform.SetParent(GameObject.Find("Player_Bow_Sprite").transform);
+        bowBehaviour.SetBow(0);
         //ChangeArrow(0); //Precisa instanciar pelo codigo para que isso seja possivel
     }
     public void Update()
@@ -55,7 +59,7 @@ public class GameManager : MonoBehaviour {
                 bowBehaviour.SetBow(4);
             bowBehaviour.SetBowRotation(angle);
         }
-        if(actualStage == Stages.enemy && Camera.main.orthographicSize == 3)
+        if(actualStage == Stages.enemy && Camera.main.orthographicSize > 3.01)
         {
             enemyCanShoot = true;
         }
@@ -64,7 +68,6 @@ public class GameManager : MonoBehaviour {
     }
     public void SetZoom(Stages stage)
     {
-        Debug.Log(stage);
         if (stage == Stages.playershot)
         {
             timer += Time.deltaTime;

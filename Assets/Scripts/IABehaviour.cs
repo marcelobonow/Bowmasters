@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class IABehaviour : MonoBehaviour {
 
-    private void Start()
+    private void FixedUpdate()
     {
-        Debug.Log("Started");
-        Debug.Log(GameManager.actualStage);
-        GameManager.actualStage = GameManager.Stages.Player;
+        if(GameManager.enemyCanShoot)
+        {
+            GameManager.actualStage = GameManager.Stages.Player;
+        }
     }
 }
