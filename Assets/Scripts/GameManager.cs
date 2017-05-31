@@ -2,79 +2,79 @@
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-
+    public enum Stages {
+        Player, playershot,enemy,enemyshot
+    }
+    public static Stages actualStage;
     public static GameObject arrow;
-    public static bool canShoot;
     public static float angle;
     public static float shotPower;
-    public static bool inAir; //mudar depois para a maquina de estados;
+    public static bool enemyCanShoot;
     [SerializeField]
     private ShootingBehaviour shootBehaviour;
     [SerializeField]
     private BowBehaviour bowBehaviour;
     [SerializeField]
-    private static int zoom;
-    [SerializeField]
     private float timer;
+    [SerializeField]
+    private IABehaviour iaBehaviour;
 
     private void Awake()
     {
-        canShoot = true;
-        inAir = false;
-        zoom = 0;
+        actualStage = Stages.Player;
+        enemyCanShoot = false;
         arrow = GameObject.Find("Arrow"); //Apagar esta linha e descomentar a próxima
         //ChangeArrow(0); //Precisa instanciar pelo codigo para que isso seja possivel
     }
     public void Update()
     {
-        if (canShoot)
+        if (actualStage == Stages.Player)
         {
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
+                Debug.Log(shotPower);
                 shootBehaviour.Shot(shotPower, angle, arrow);
-                canShoot = false;
-                zoom = 1;
+                actualStage = Stages.playershot;
             }
-
         }
     }
     private void FixedUpdate()
     {
-        if (InputManager.hasSnap)
+        iaBehaviour.enabled = actualStage == Stages.enemy ? true : false;
+        if (InputManager.hasSnap && actualStage == Stages.Player)
         {
-            if (shotPower < 100)
-            {
+            if (shotPower < 10)
                 bowBehaviour.SetBow(0);
-            }
-            else if (shotPower >= 100 && shotPower < 600)
+            else if (shotPower >= 10 && shotPower < 50)
                 bowBehaviour.SetBow(1);
-            else if (shotPower >= 600 && shotPower < 1100)
+            else if (shotPower >= 50 && shotPower < 100)
                 bowBehaviour.SetBow(2);
-            else if (shotPower >= 1100 && shotPower < 1600)
+            else if (shotPower >= 100 && shotPower < 150)
                 bowBehaviour.SetBow(3);
             else
                 bowBehaviour.SetBow(4);
             bowBehaviour.SetBowRotation(angle);
         }
-        if(zoom == -1 && Camera.main.orthographicSize == 3)
+        if(actualStage == Stages.enemy && Camera.main.orthographicSize == 3)
         {
-            zoom = 0;
+            enemyCanShoot = true;
         }
-        if(zoom == 1)
+            SetZoom(actualStage);
+        
+    }
+    public void SetZoom(Stages stage)
+    {
+        Debug.Log(stage);
+        if (stage == Stages.playershot)
         {
             timer += Time.deltaTime;
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 10, timer / 15);
         }
-        if(zoom == -1)
+        if (stage == Stages.enemy)
         {
             timer += Time.deltaTime;
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 3, timer / 15);
         }
-    }
-
-    public static void SetinAir(bool _value)
-    {
-        inAir = _value;
     }
     public static void SetAngle(float _angle)
     {
@@ -85,13 +85,9 @@ public class GameManager : MonoBehaviour {
     }
     public static void SetShotPower(float _shotPower)
     {
-        if (_shotPower > 2000)
-            shotPower = 2000;
+        if (_shotPower > 200)
+            shotPower = 200;
         else
             shotPower = _shotPower;
-    }
-    public static void SetCameraAnimatorState(int _value)
-    {
-        zoom = _value;
     }
 }

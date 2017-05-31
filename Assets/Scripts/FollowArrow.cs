@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FollowArrow : MonoBehaviour {
 
@@ -8,20 +6,24 @@ public class FollowArrow : MonoBehaviour {
     [SerializeField]
     private GameObject arrow;
     [SerializeField]
-    private Transform startPoint;
+    private Transform startPointPlayer;
+    [SerializeField]
+    private Transform startPointEnemy;
 
     private void Start()
     {
         arrow = GameManager.arrow;
-        gameObject.transform.position = startPoint.position;
+        gameObject.transform.position = startPointPlayer.position;
     }
-    void Update ()
-    { 
-        if (GameManager.inAir)
-        {
-            transform.position = new Vector3(arrow.transform.position.x,arrow.transform.position.y,ZCAMERA);
-        }
-        //else
-            //transform.position = new Vector3(0, 0, 0); //mudar para um start point talvez
+    void FixedUpdate ()
+    {
+        if (GameManager.actualStage == GameManager.Stages.playershot || GameManager.actualStage == GameManager.Stages.enemyshot)
+            transform.position = new Vector3(arrow.transform.position.x, arrow.transform.position.y, ZCAMERA);
+        else if(GameManager.actualStage == GameManager.Stages.Player)
+            transform.position = startPointPlayer.position;
+        else if(GameManager.actualStage == GameManager.Stages.enemy)
+            transform.position = startPointEnemy.position;
+        else
+            Debug.Log("Erro, Actual stage: " + GameManager.actualStage);
 	}
 }

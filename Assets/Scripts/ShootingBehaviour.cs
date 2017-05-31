@@ -9,7 +9,7 @@ public class ShootingBehaviour : MonoBehaviour {
     
     public void Shot(float _shotPower, float _angle, GameObject _arrow)
     {
-        GameManager.inAir = true;
+        Debug.Log(_shotPower);
         Rigidbody2D arrowRigidBody = _arrow.GetComponent<Rigidbody2D>();
         arrowRigidBody.AddForce(new Vector2(Mathf.Cos(_angle * Mathf.Deg2Rad) * _shotPower, Mathf.Sin(_angle * Mathf.Deg2Rad) * _shotPower));
         arrowRigidBody.simulated = true;

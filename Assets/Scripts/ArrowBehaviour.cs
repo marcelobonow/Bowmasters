@@ -16,7 +16,7 @@ public class ArrowBehaviour : MonoBehaviour {
     }
 
     void FixedUpdate () {
-        if (GameManager.inAir)
+        if (GameManager.actualStage == GameManager.Stages.playershot)
         {
             angle = rigidBody.velocity.y == 0 ? //Há erro se tentar dividir 0 pela velocidade, o valor sai errado.
                 angle = 0:Mathf.Atan(rigidBody.velocity.y / rigidBody.velocity.x) * Mathf.Rad2Deg; //Dividindo a velocidade y pela velocidade x, se da a tangente.A atangente retorna em radianos, que é convertido para deg
@@ -25,27 +25,26 @@ public class ArrowBehaviour : MonoBehaviour {
 	}
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag("Ground"))
+        if(collision.CompareTag("Player"))
         {
             gameObject.GetComponent<Collider2D>().isTrigger = true;
-            transform.position += new Vector3(0.1f, -0.1f);
+            transform.position += new Vector3(0.1f, -0.1f); //Enterra a flecha no alvo
             rigidBody.velocity = new Vector2(0, 0);
-            GameManager.SetinAir(false);
             rigidBody.simulated = false;
             rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
+            gameObject.transform.SetParent(collision.transform);
+            collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(10f, 0));
+            GameManager.actualStage = GameManager.actualStage == GameManager.Stages.playershot ? GameManager.Stages.enemy : GameManager.Stages.Player;
         }
-        if (collision.transform.CompareTag("Player"))
+        if(collision.CompareTag("Ground"))
         {
-            /* não foi possivel manter tanto o alvo quando a flecha sem trigger e fazer a flecha penetrar
-             * no objeto que acertar */
             gameObject.GetComponent<Collider2D>().isTrigger = true;
-            transform.position += new Vector3(0.1f, -0.1f);
+            transform.position += new Vector3(0.1f, -0.1f); //Enterra a flecha no alvo
             rigidBody.velocity = new Vector2(0, 0);
-            GameManager.SetinAir(false);
             rigidBody.simulated = false;
             rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
+            gameObject.transform.SetParent(collision.transform);
+            GameManager.actualStage = GameManager.actualStage == GameManager.Stages.playershot ? GameManager.Stages.enemy : GameManager.Stages.Player; 
         }
-        //restart();
-        GameManager.SetCameraAnimatorState(-1);
     }
 }

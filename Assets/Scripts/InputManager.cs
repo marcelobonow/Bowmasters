@@ -14,12 +14,10 @@ public class InputManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (CrossPlatformInputManager.GetButtonUp("Fire1"))
-        {
-            hasSnap = false;
-        }
-        if (GameManager.canShoot)
+        if (GameManager.actualStage == GameManager.Stages.Player)
         {  
+            if (CrossPlatformInputManager.GetButtonUp("Fire1"))
+                hasSnap = false;
             if (!hasSnap && CrossPlatformInputManager.GetButtonDown("Fire1"))
             {
                 snapPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -32,15 +30,13 @@ public class InputManager : MonoBehaviour {
                  *  e eixo y */
                 Vector3 newMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 float angle = (snapPosition.y - newMousePosition.y) * 20;
-                float shotPower = Vector3.Distance(snapPosition,newMousePosition) * 1000;
+                float shotPower = Vector3.Distance(snapPosition,newMousePosition) * 50;
                 GameManager.SetAngle(angle);
                 GameManager.SetShotPower(shotPower);
             }
         }
         if(Input.GetKeyDown(KeyCode.R))
-        {
             SceneManager.LoadScene(0);   
-        }
         
     }
 }

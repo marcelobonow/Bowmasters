@@ -7,7 +7,7 @@ public class BowBehaviour : MonoBehaviour {
     [SerializeField]
     private Sprite[] bowPositions;
     [SerializeField]
-    public float[] arrowPositions;
+    private float[] arrowPositions;
     [SerializeField]
     private float bowAngle;
     [SerializeField]
