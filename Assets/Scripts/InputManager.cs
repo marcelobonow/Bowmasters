@@ -26,17 +26,14 @@ public class InputManager : MonoBehaviour {
         {
             if (!hasSnap && CrossPlatformInputManager.GetButtonDown("Fire1"))
             {
-                snapPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                hasSnap = true;
+                snapPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);//varia a força e angulo baseado
+                hasSnap = true;                                                    //em onde a pessoa clicou
             }
             if (hasSnap)
             {
-                /* O jogo original pega a diferença absoluta no eixo x entre a posição atual do mouse e o snap
-                 * para dar a força, eu achei não muito intuitivo e preferi usar a distancia somando o eixo x
-                 *  e eixo y */
                 Vector3 newMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 angle = (snapPosition.y - newMousePosition.y) * 20;
-                shotPower = Vector3.Distance(snapPosition, newMousePosition)*200;
+                shotPower = (snapPosition.x - newMousePosition.x)*200;
                 if (shotPower > 200)
                     shotPower = 200;
                 GameManager.SetAngle(angle);

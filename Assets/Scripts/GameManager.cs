@@ -9,11 +9,11 @@ public class GameManager : MonoBehaviour {
     public static float angle;
     public static float shotPower;
     public static bool enemyCanShoot;
-    [SerializeField]
-    private GameManager gameManager;
     public GameObject arrowPlayerPrefab;
     public GameObject arrowEnemyPrefab;
 
+    [SerializeField]
+    private GameManager gameManager;
     [SerializeField]
     private BowBehaviour bowBehaviour;
     [SerializeField]
