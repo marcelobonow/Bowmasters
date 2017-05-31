@@ -1,9 +1,11 @@
 ﻿using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
-    public enum Stage {
-        Player, playershot,Enemy,EnemyShot
+public class GameManager : MonoBehaviour
+{
+    public enum Stage
+    {
+        Player, playershot, Enemy, EnemyShot
     }
     public static GameObject arrow;
     public static float angle;
@@ -37,7 +39,7 @@ public class GameManager : MonoBehaviour {
         arrow = playerArrow;
         enemyCanShoot = false;
         arrow = Instantiate(arrow);
-        GameObject playerBow= GameObject.Find("PlayerBow");
+        GameObject playerBow = GameObject.Find("PlayerBow");
         playerBow.transform.eulerAngles = new Vector3(0, 0, 0);
         arrow.transform.SetParent(playerBow.transform);
         arrow.GetComponent<ArrowBehaviour>().gameManager = this;
@@ -48,20 +50,20 @@ public class GameManager : MonoBehaviour {
     }
     public void SetEnemy()
     {
-        //arrow = enemyArrow;
-        //arrow = Instantiate(arrow);
-        //GameObject enemyBow = GameObject.Find("EnemyBow");
-        //enemyBow.transform.eulerAngles = new Vector3(0, 0, 0);
-        //arrow.transform.SetParent(enemyBow.transform);
-        //arrow.GetComponent<ArrowBehaviour>().gameManager = this;
-        //arrow.GetComponent<ArrowBehaviour>().enabled = true;
-        //bowBehaviour.SetBow(0);
-        //InputManager.hasSnap = false;
-        //timer = 0;
+        arrow = enemyArrow;
+        arrow = Instantiate(arrow);
+        GameObject enemyBow = GameObject.Find("EnemyBow");
+        enemyBow.transform.eulerAngles = new Vector3(0, 0, 180);
+        arrow.transform.SetParent(enemyBow.transform);
+        arrow.GetComponent<ArrowBehaviour>().gameManager = this;
+        arrow.GetComponent<ArrowBehaviour>().enabled = true;
+        bowBehaviour.SetBow(0);
+        InputManager.hasSnap = false;
+        timer = 0;
     }
     private void FixedUpdate()
     {
-            SetZoom(stage);
+        SetZoom(stage);
         if (InputManager.hasSnap && stage == Stage.Player)
         {
             if (shotPower < 1)
@@ -77,7 +79,7 @@ public class GameManager : MonoBehaviour {
             bowBehaviour.SetBowRotation(angle);
         }
 
-        
+
     }
     //passar para o inputManager
     public void SetZoom(Stage stage)
@@ -95,7 +97,7 @@ public class GameManager : MonoBehaviour {
     }
     public static void SetAngle(float _angle)
     {
-        if(_angle < 90)
+        if (_angle < 90)
         {
             angle = _angle;
         }
