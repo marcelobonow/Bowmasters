@@ -9,9 +9,9 @@ public class GameManager : MonoBehaviour {
     public static float angle;
     public static float shotPower;
     public static bool enemyCanShoot;
-    public GameObject arrowPlayerPrefab;
-    public GameObject arrowEnemyPrefab;
 
+    [SerializeField]
+    private GameObject Player_Arrow;    //Pode ser um vetor de flechas diferentes, com danos diferentes, por exemplo
     [SerializeField]
     private GameManager gameManager;
     [SerializeField]
@@ -25,16 +25,18 @@ public class GameManager : MonoBehaviour {
 
     private void Awake()
     {
+        stage = Stage.Player;
         SetPlayer();
         //ChangeArrow(0); //Precisa instanciar pelo codigo para que isso seja possivel
     }
     public void SetPlayer()
     {
+        arrow = Player_Arrow;
         enemyCanShoot = false;
-        arrow = Instantiate(arrowPlayerPrefab);
-        GameObject Player_Bow_Sprite= GameObject.Find("Player_Bow_Sprite");
-        Player_Bow_Sprite.transform.eulerAngles = new Vector3(0, 0, 0);
-        arrow.transform.SetParent(Player_Bow_Sprite.transform);
+        arrow = Instantiate(arrow);
+        GameObject playerBow= GameObject.Find("PlayerBow");
+        playerBow.transform.eulerAngles = new Vector3(0, 0, 0);
+        arrow.transform.SetParent(playerBow.transform);
         arrow.GetComponent<ArrowBehaviour>().gameManager = this;
         bowBehaviour.SetBow(0);
         InputManager.hasSnap = false;
@@ -42,7 +44,11 @@ public class GameManager : MonoBehaviour {
     }
     private void FixedUpdate()
     {
-        iaBehaviour.enabled = stage == Stage.Enemy ? true : false;
+        if(stage == Stage.Enemy && FollowArrow.inPosition) //Passagem do turno do tiro do player para inimigo atirar
+        {
+            enemyCanShoot = true;
+        }
+            SetZoom(stage);
         if (InputManager.hasSnap && stage == Stage.Player)
         {
             if (shotPower < 10)
@@ -58,16 +64,12 @@ public class GameManager : MonoBehaviour {
             bowBehaviour.SetBowRotation(angle);
         }
 
-        if(stage == Stage.Enemy && Camera.main.orthographicSize < 3.01)
-        {
-            enemyCanShoot = true;
-        }
-            SetZoom(stage);
         
     }
+    //passar para o inputManager
     public void SetZoom(Stage stage)
     {
-        if (stage == Stage.playershot)
+        if (stage == Stage.playershot)//Provavelmente vá precisar de mudanças
         {
             timer += Time.deltaTime;
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 10, timer / 15);

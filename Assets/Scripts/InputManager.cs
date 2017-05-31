@@ -1,6 +1,6 @@
-﻿using UnityStandardAssets.CrossPlatformInput;
+﻿//esse script cuida do Input e passa as informações para o GameManager tratar
+using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour {
 
@@ -8,13 +8,8 @@ public class InputManager : MonoBehaviour {
     private Vector3 snapPosition;
     public static bool hasSnap;
     [SerializeField]
-    private ShootingBehaviour shootBehaviour;
-    [SerializeField]
     private GameManager gameManager;
     [SerializeField]
-    private float shotPower;
-    [SerializeField]
-    private float angle;
 
     void Start () {
         hasSnap = false;
@@ -22,6 +17,7 @@ public class InputManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
         if (GameManager.staticStage == GameManager.Stage.Player)
         {
             if (!hasSnap && CrossPlatformInputManager.GetButtonDown("Fire1"))
@@ -31,9 +27,10 @@ public class InputManager : MonoBehaviour {
             }
             if (hasSnap)
             {
+                //Angulo é calculado pela diferença no eixo y e a força na diferença do eixo x
                 Vector3 newMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                angle = (snapPosition.y - newMousePosition.y) * 20;
-                shotPower = (snapPosition.x - newMousePosition.x)*200;
+                float angle = (snapPosition.y - newMousePosition.y) * 20;
+                float shotPower = (snapPosition.x - newMousePosition.x)*200;
                 if (shotPower > 200)
                     shotPower = 200;
                 GameManager.SetAngle(angle);
@@ -42,8 +39,9 @@ public class InputManager : MonoBehaviour {
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
                 hasSnap = false;
-                gameManager.SetStage(GameManager.Stage.playershot);
-                shootBehaviour.Shot(shotPower, angle, GameManager.arrow);
+                gameManager.SetStage(GameManager.Stage.playershot); // Passagem da rodada de jogador atirar para tiro do jogador
+                GameManager.arrow.GetComponent<ArrowBehaviour>().enabled = true;
+                ShootingBehaviour.Shot(GameManager.shotPower, GameManager.angle, GameManager.arrow);
             }
         }
     }
