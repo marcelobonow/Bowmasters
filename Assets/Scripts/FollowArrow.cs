@@ -7,10 +7,13 @@ public class FollowArrow : MonoBehaviour {
     private const float ZCAMERA = -10;
     [SerializeField]
     private GameObject arrow;
+    [SerializeField]
+    private Transform startPoint;
 
     private void Start()
     {
         arrow = GameManager.arrow;
+        gameObject.transform.position = startPoint.position;
     }
     void Update ()
     { 

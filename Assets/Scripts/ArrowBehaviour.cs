@@ -27,19 +27,25 @@ public class ArrowBehaviour : MonoBehaviour {
     {
         if (collision.transform.CompareTag("Ground"))
         {
-            Debug.Log(collision.transform.tag);
+            gameObject.GetComponent<Collider2D>().isTrigger = true;
+            transform.position += new Vector3(0.1f, -0.1f);
+            rigidBody.velocity = new Vector2(0, 0);
             GameManager.SetinAir(false);
+            rigidBody.simulated = false;
+            rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
         }
         if (collision.transform.CompareTag("Player"))
         {
             /* não foi possivel manter tanto o alvo quando a flecha sem trigger e fazer a flecha penetrar
              * no objeto que acertar */
             gameObject.GetComponent<Collider2D>().isTrigger = true;
-            transform.position += new Vector3(rigidBody.velocity.x,transform.position.y)*0.04f;
+            transform.position += new Vector3(0.1f, -0.1f);
             rigidBody.velocity = new Vector2(0, 0);
             GameManager.SetinAir(false);
             rigidBody.simulated = false;
             rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
         }
+        //restart();
+        GameManager.SetCameraAnimatorState(-1);
     }
 }
