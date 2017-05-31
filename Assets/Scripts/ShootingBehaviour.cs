@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ShootingBehaviour : MonoBehaviour {
 
-    private const float OFFSET = -90;
     [SerializeField]
     private GameObject arrow;
     [SerializeField]
@@ -29,14 +28,8 @@ public class ShootingBehaviour : MonoBehaviour {
 
     public void Shoot(float _angle, GameObject _arrow)
     {
+        GameManager.inAir = true;
         Rigidbody2D arrowRigidBody = arrow.GetComponent<Rigidbody2D>();
-
-        if (arrowRigidBody == null)
-        {
-            Debug.Log("Faltando Rigidbody na flecha");
-        }
-        else
-            Debug.Log("Remover esta linha");
         arrowRigidBody.AddForce(new Vector2(Mathf.Cos(_angle * Mathf.Deg2Rad) * shootPower, Mathf.Sin(_angle * Mathf.Deg2Rad) * shootPower));
         arrowRigidBody.simulated = true;
         //_arrow.transform.Rotate(0, 0, _angle - OFFSET);
