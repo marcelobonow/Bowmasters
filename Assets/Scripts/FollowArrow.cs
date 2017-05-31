@@ -12,18 +12,24 @@ public class FollowArrow : MonoBehaviour {
 
     private void Start()
     {
-        arrow = GameManager.arrow;
         gameObject.transform.position = startPointPlayer.position;
     }
     void FixedUpdate ()
     {
-        if (GameManager.actualStage == GameManager.Stages.playershot || GameManager.actualStage == GameManager.Stages.enemyshot)
+        if (GameManager.staticStage == GameManager.Stage.playershot || GameManager.staticStage == GameManager.Stage.EnemyShot)
+        {
+            arrow = GameManager.arrow;
             transform.position = new Vector3(arrow.transform.position.x, arrow.transform.position.y, ZCAMERA);
-        else if(GameManager.actualStage == GameManager.Stages.Player)
+        }
+        else if(GameManager.staticStage == GameManager.Stage.Player)
+        {
+            arrow = GameManager.arrow;
             transform.position = startPointPlayer.position;
-        else if(GameManager.actualStage == GameManager.Stages.enemy)
+        }
+        else if(GameManager.staticStage == GameManager.Stage.Enemy)
+        {
             transform.position = startPointEnemy.position;
-        else
-            Debug.Log("Erro, Actual stage: " + GameManager.actualStage);
+            arrow = GameManager.arrow;
+        }
 	}
 }

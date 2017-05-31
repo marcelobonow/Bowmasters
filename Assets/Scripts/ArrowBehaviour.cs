@@ -9,6 +9,7 @@ public class ArrowBehaviour : MonoBehaviour {
     [SerializeField]
     private float angle;
     private Rigidbody2D rigidBody;
+    public GameManager gameManager;
 
     private void Start()
     {
@@ -16,7 +17,7 @@ public class ArrowBehaviour : MonoBehaviour {
     }
 
     void FixedUpdate () {
-        if (GameManager.actualStage == GameManager.Stages.playershot)
+        if (GameManager.staticStage == GameManager.Stage.playershot)
         {
             angle = rigidBody.velocity.y == 0 ? //Há erro se tentar dividir 0 pela velocidade, o valor sai errado.
                 angle = 0:Mathf.Atan(rigidBody.velocity.y / rigidBody.velocity.x) * Mathf.Rad2Deg; //Dividindo a velocidade y pela velocidade x, se da a tangente.A atangente retorna em radianos, que é convertido para deg
@@ -35,11 +36,11 @@ public class ArrowBehaviour : MonoBehaviour {
         if(collision.CompareTag("Player"))
         {
             collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(10f, 0));
-            GameManager.actualStage = GameManager.actualStage == GameManager.Stages.playershot ? GameManager.Stages.enemy : GameManager.Stages.Player;
+            gameManager.SetStage(GameManager.staticStage == GameManager.Stage.playershot ? GameManager.Stage.Enemy : GameManager.Stage.Player);
         }
         if(collision.CompareTag("Ground"))
         {
-            GameManager.actualStage = GameManager.actualStage == GameManager.Stages.playershot ? GameManager.Stages.enemy : GameManager.Stages.Player; 
+            gameManager.SetStage(GameManager.staticStage == GameManager.Stage.playershot ? GameManager.Stage.Enemy : GameManager.Stage.Player); 
         }
     }
 }

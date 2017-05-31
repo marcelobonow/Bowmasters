@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class IABehaviour : MonoBehaviour {
 
+    [SerializeField]
+    private GameManager gameManager;
+
     private void FixedUpdate()
     {
         if(GameManager.enemyCanShoot)
         {
-            GameManager.actualStage = GameManager.Stages.Player;
+            gameManager.SetStage(GameManager.Stage.Player);
         }
     }
 }

@@ -2,50 +2,48 @@
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-    public enum Stages {
-        Player, playershot,enemy,enemyshot
+    public enum Stage {
+        Player, playershot,Enemy,EnemyShot
     }
-    public static Stages actualStage;
     public static GameObject arrow;
     public static float angle;
     public static float shotPower;
     public static bool enemyCanShoot;
+    [SerializeField]
+    private GameManager gameManager;
     public GameObject arrowPlayerPrefab;
     public GameObject arrowEnemyPrefab;
-    [SerializeField]
-    private ShootingBehaviour shootBehaviour;
+
     [SerializeField]
     private BowBehaviour bowBehaviour;
     [SerializeField]
     private float timer;
     [SerializeField]
     private IABehaviour iaBehaviour;
+    public static Stage staticStage; //Static é apenas para leitura
+    private Stage stage; //enquanto este é para a escrita
 
     private void Awake()
     {
-        actualStage = Stages.Player;
-        enemyCanShoot = false;
-        arrow = Instantiate(arrowPlayerPrefab);
-        arrow.transform.SetParent(GameObject.Find("Player_Bow_Sprite").transform);
-        bowBehaviour.SetBow(0);
+        SetPlayer();
         //ChangeArrow(0); //Precisa instanciar pelo codigo para que isso seja possivel
     }
-    public void Update()
+    public void SetPlayer()
     {
-        if (actualStage == Stages.Player)
-        {
-            if (CrossPlatformInputManager.GetButtonUp("Fire1"))
-            {
-                Debug.Log(shotPower);
-                shootBehaviour.Shot(shotPower, angle, arrow);
-                actualStage = Stages.playershot;
-            }
-        }
+        enemyCanShoot = false;
+        arrow = Instantiate(arrowPlayerPrefab);
+        GameObject Player_Bow_Sprite= GameObject.Find("Player_Bow_Sprite");
+        Player_Bow_Sprite.transform.eulerAngles = new Vector3(0, 0, 0);
+        arrow.transform.SetParent(Player_Bow_Sprite.transform);
+        arrow.GetComponent<ArrowBehaviour>().gameManager = this;
+        bowBehaviour.SetBow(0);
+        InputManager.hasSnap = false;
+        timer = 0;
     }
     private void FixedUpdate()
     {
-        iaBehaviour.enabled = actualStage == Stages.enemy ? true : false;
-        if (InputManager.hasSnap && actualStage == Stages.Player)
+        iaBehaviour.enabled = stage == Stage.Enemy ? true : false;
+        if (InputManager.hasSnap && stage == Stage.Player)
         {
             if (shotPower < 10)
                 bowBehaviour.SetBow(0);
@@ -59,21 +57,22 @@ public class GameManager : MonoBehaviour {
                 bowBehaviour.SetBow(4);
             bowBehaviour.SetBowRotation(angle);
         }
-        if(actualStage == Stages.enemy && Camera.main.orthographicSize > 3.01)
+
+        if(stage == Stage.Enemy && Camera.main.orthographicSize < 3.01)
         {
             enemyCanShoot = true;
         }
-            SetZoom(actualStage);
+            SetZoom(stage);
         
     }
-    public void SetZoom(Stages stage)
+    public void SetZoom(Stage stage)
     {
-        if (stage == Stages.playershot)
+        if (stage == Stage.playershot)
         {
             timer += Time.deltaTime;
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 10, timer / 15);
         }
-        if (stage == Stages.enemy)
+        if (stage == Stage.Enemy)
         {
             timer += Time.deltaTime;
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 3, timer / 15);
@@ -88,9 +87,19 @@ public class GameManager : MonoBehaviour {
     }
     public static void SetShotPower(float _shotPower)
     {
-        if (_shotPower > 200)
-            shotPower = 200;
-        else
-            shotPower = _shotPower;
+        shotPower = _shotPower;
+    }
+    public void SetStage(Stage _stage)
+    {
+        if (_stage == Stage.Player)
+            SetPlayer();
+        //if(_stage == Stage.Enemy)
+            //SetEnemy();
+        stage = _stage;
+        staticStage = stage;
+    }
+    public Stage GetStage()
+    {
+        return stage;
     }
 }
