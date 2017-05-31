@@ -32,6 +32,8 @@ public class ArrowBehaviour : MonoBehaviour {
         }
         if (collision.transform.CompareTag("Player"))
         {
+            /* não foi possivel manter tanto o alvo quando a flecha sem trigger e fazer a flecha penetrar
+             * no objeto que acertar */
             gameObject.GetComponent<Collider2D>().isTrigger = true;
             transform.position += new Vector3(rigidBody.velocity.x,transform.position.y)*0.04f;
             rigidBody.velocity = new Vector2(0, 0);

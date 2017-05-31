@@ -7,8 +7,9 @@ public class InputManager : MonoBehaviour {
     private Vector3 snapPosition;
     [SerializeField]
     private bool hasSnap;
+
 	void Start () {
-		
+        hasSnap = false;
 	}
 	
 	// Update is called once per frame
@@ -29,9 +30,14 @@ public class InputManager : MonoBehaviour {
                 /* O jogo original pega a diferença absoluta no eixo x entre a posição atual do mouse e o snap
                  * para dar a força, eu achei não muito intuitivo e preferi usar a distancia somando o eixo x
                  *  e eixo y */
-                float angle = (snapPosition.y - Camera.main.ScreenToWorldPoint(Input.mousePosition).y) * 20;
+                Debug.Log("teste");
+                Vector3 newMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                float angle = (snapPosition.y - newMousePosition.y) * 20;
+                float shotPower = Vector3.Distance(snapPosition,newMousePosition) * 1000;
                 GameManager.SetAngle(angle);
-                Debug.Log(angle);
+                GameManager.SetShotPower(shotPower);
+                Debug.Log("Shot power: " + shotPower);
+                Debug.Log("angle: " + angle);
             }
         }
         
