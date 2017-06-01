@@ -11,7 +11,7 @@ public class IABehaviour : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        if(GameManager.cameraInPosition && GameManager.enemyCanShot && gameManager.GetStage() == GameManager.Stage.Enemy)
+        if(GameManager.enemyCanShot)
         {
             GameManager.enemyCanShot = false;
             StartCoroutine(Aim(Player.transform.position,20));
@@ -42,12 +42,12 @@ public class IABehaviour : MonoBehaviour {
                 Debug.Log("Angle: " + angle*Mathf.Rad2Deg);
                 break;
             }
-            if(i % 30 == 0)
+            if(i % 15 == 0)
             {
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.1f);
             }
         }
-        ShootingBehaviour.Shot(TotalVelocity, (angle*Mathf.Rad2Deg+90), GameManager.arrow);
+        ShootingBehaviour.Shot(TotalVelocity, (180 - angle*Mathf.Rad2Deg), GameManager.arrow);
         gameManager.SetStage(GameManager.Stage.EnemyShot);
     }
     IEnumerator BowDrawAnimation() //Poderia ser feito numa animação (usando o animator) porém como ja tenho tudo pronto

@@ -35,12 +35,13 @@ public class ArrowBehaviour : MonoBehaviour {
         rigidBody.simulated = false;
         gameObject.transform.SetParent(collision.transform);
         if (GameManager.staticStage == GameManager.Stage.playershot)
+        {
             gameManager.SetStage(GameManager.Stage.Enemy);
+            gameManager.SetEnemy();
+        }
         if (GameManager.staticStage == GameManager.Stage.EnemyShot)
             gameManager.SetStage(GameManager.Stage.Player);
         RemoveComponents();
-        if(GameManager.staticStage == GameManager.Stage.playershot)
-            gameManager.SetEnemy();
         if(collision.CompareTag("Player"))
         {
             collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(-10f, 0));

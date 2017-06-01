@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
     {
         stage = Stage.Player;
         SetPlayer();
-        //ChangeArrow(0); //Precisa instanciar pelo codigo para que isso seja possivel
     }
     public void SetPlayer()
     {
