@@ -31,12 +31,15 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         stage = Stage.Player;
+        staticStage = stage;
         SetPlayer();
     }
+
     public void SetPlayer()
     {
         arrow = playerArrow;
         cameraInPosition = false;
+        enemyCanShot = false;
         arrow = Instantiate(arrow);
         GameObject playerBow = GameObject.Find("PlayerBow");
         playerBow.transform.eulerAngles = new Vector3(0, 0, 0);

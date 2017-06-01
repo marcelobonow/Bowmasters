@@ -17,7 +17,6 @@ public class HUDManager : MonoBehaviour
     public void CreatePopUp(Vector2 position)
     {
         RectTransform rectTransform = popUp.GetComponent<RectTransform>();
-        Debug.Log(position.y + rectTransform.rect.height);
         //Por padrão o valor é setado ao valor passado
         rectTransform.position = position;
         //Esse bloco de if/else if verifica se algum valor esta fora da tela, se estiver,
