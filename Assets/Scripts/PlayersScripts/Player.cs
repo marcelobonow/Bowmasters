@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 public class Player : MonoBehaviour {
-    public Arrow arrow;
+    public Arrow arrow; //scripts que descendem deste terão um script que descende de arrow
+                        //ou seja, cada personagem tem suas caracteristicas e uma flecha com suas caracteristicas
     private float health = 15f;
 	//healthbar
 
