@@ -41,14 +41,10 @@ public class IABehaviour : MonoBehaviour {
                 time = -(verticalVelocity * 2 / Physics.gravity.y); //Gravidade no unity no eixo y = -9.8
                 if (time > (distance / horizontalVelocity))
                 {
-                    //Debug.Log("time: " + time);
-                    //Debug.Log("Vertical Velocity: " + verticalVelocity);
-                    Debug.Log("Distance: " + distance);
-                    Debug.Log("Angle: " + angle);
                     break;
                 }
             }
-                bow.SetBowRotation(90+(angle * Mathf.Rad2Deg));
+                bow.SetBowRotation(Mathf.PI-angle);
             if (time > (distance / horizontalVelocity))
             {
                 break;
@@ -58,12 +54,12 @@ public class IABehaviour : MonoBehaviour {
         {
             animationTimer += 0.03f;
             Camera.main.orthographicSize = Mathf.Lerp(3, totalVelocity / 8f + 3, animationTimer);
-            bow.SetBowRotation(Mathf.Lerp(180, 180 - (angle*Mathf.Rad2Deg), animationTimer));
+            bow.SetBowRotation(Mathf.Lerp(Mathf.PI, Mathf.PI - (angle), animationTimer));
             bow.SetBowPosition(Mathf.FloorToInt(4 * animationTimer + 1));
             yield return new WaitForSeconds(0.03f);
         }
         Debug.Log(totalVelocity);
-        ShootingBehaviour.Shot(totalVelocity, (180 - angle * Mathf.Rad2Deg), GameManager.arrow);
+        ShootingBehaviour.Shot(totalVelocity, (Mathf.PI - angle), GameManager.arrow);
         GameManager.cameraInPosition = false;
         gameManager.SetStage(GameManager.Stage.EnemyShot);
     }

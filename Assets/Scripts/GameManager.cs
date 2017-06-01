@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
     }
     public static void SetAngle(float _angle)
     {
-        if (_angle < 180)
+        if (_angle < Mathf.PI)
         {
             angle = _angle;
         }

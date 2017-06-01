@@ -22,6 +22,6 @@ public class BowBehaviour : MonoBehaviour {
     }
     public void SetBowRotation(float _angle)
     {
-        transform.eulerAngles = new Vector3(0, 0, _angle);
+        transform.eulerAngles = new Vector3(0, 0, _angle*Mathf.Rad2Deg);
     }
 }
