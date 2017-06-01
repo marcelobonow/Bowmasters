@@ -11,7 +11,7 @@ public class BowBehaviour : MonoBehaviour {
     [SerializeField]
     private float bowAngle;
 
-    public void SetBow(int _position)
+    public void SetBowPosition(int _position)
     {
 
         if (_position >= 0 && _position < bowPositions.Length)

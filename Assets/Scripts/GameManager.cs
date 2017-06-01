@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         arrow.transform.SetParent(playerBow.transform);
         arrow.GetComponent<ArrowBehaviour>().gameManager = this;
         arrow.GetComponent<ArrowBehaviour>().enabled = true;
-        playerBow.GetComponent<BowBehaviour>().SetBow(0);
+        playerBow.GetComponent<BowBehaviour>().SetBowPosition(0);
         InputManager.hasSnap = false;
         timer = 0;
     }
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         arrow.transform.SetParent(enemyBow.transform);
         arrow.GetComponent<ArrowBehaviour>().gameManager = this;
         arrow.GetComponent<ArrowBehaviour>().enabled = true;
-        enemyBow.GetComponent<BowBehaviour>().SetBow(0);
+        enemyBow.GetComponent<BowBehaviour>().SetBowPosition(0);
         InputManager.hasSnap = false;
         timer = 0;
     }
@@ -66,15 +66,15 @@ public class GameManager : MonoBehaviour
         if (InputManager.hasSnap && stage == Stage.Player)
         {
             if (shotPower < 1)
-                bowBehaviour.SetBow(0);
+                bowBehaviour.SetBowPosition(0);
             else if (shotPower >= 1 && shotPower < 5)
-                bowBehaviour.SetBow(1);
+                bowBehaviour.SetBowPosition(1);
             else if (shotPower >= 5 && shotPower < 10)
-                bowBehaviour.SetBow(2);
+                bowBehaviour.SetBowPosition(2);
             else if (shotPower >= 10 && shotPower < 15)
-                bowBehaviour.SetBow(3);
+                bowBehaviour.SetBowPosition(3);
             else
-                bowBehaviour.SetBow(4);
+                bowBehaviour.SetBowPosition(4);
             bowBehaviour.SetBowRotation(angle);
         }
 
@@ -107,10 +107,6 @@ public class GameManager : MonoBehaviour
     }
     public void SetStage(Stage _stage)
     {
-        if (_stage == Stage.Player)
-            SetPlayer();
-        if (_stage == Stage.Enemy)
-            SetEnemy();
         stage = _stage;
         staticStage = stage;
     }

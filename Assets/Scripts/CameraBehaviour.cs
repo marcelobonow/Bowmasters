@@ -30,10 +30,7 @@ public class CameraBehaviour : MonoBehaviour
             transform.position = new Vector3(arrow.transform.position.x, arrow.transform.position.y, ZCAMERA);
             inPosition = false;
         }
-        if (inPosition == true && Camera.main.orthographicSize >= 3 && GameManager.staticStage == GameManager.Stage.Enemy)
-        {
-            GameManager.enemyCanShot = true;
-        }
+        
         //se esta em um dos turnos de mirar do player ou do inimigo a camera vai para as posições pre-definidas
         if (GameManager.staticStage == GameManager.Stage.Player && !inPosition)
         {

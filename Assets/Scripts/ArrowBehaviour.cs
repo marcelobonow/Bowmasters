@@ -38,9 +38,13 @@ public class ArrowBehaviour : MonoBehaviour {
         {
             gameManager.SetStage(GameManager.Stage.Enemy);
             gameManager.SetEnemy();
+            GameManager.enemyCanShot = true;
         }
         if (GameManager.staticStage == GameManager.Stage.EnemyShot)
+        {
             gameManager.SetStage(GameManager.Stage.Player);
+            gameManager.SetPlayer();
+        }
         RemoveComponents();
         if(collision.CompareTag("Player"))
         {
