@@ -36,10 +36,10 @@ public class InputManager : MonoBehaviour {
                 Camera.main.orthographicSize = (shotPower/8f)+ 3;
                 GameManager.SetAngle(angle);
                 GameManager.SetShotPower(shotPower);
-                if (GameManager.angle > 0.1f || GameManager.shotPower >= 2)
+                if (GameManager.shotPower >= 2)
                 {
                     hud.EnablePopUp();
-                    hud.UpdatePopUp(snapPosition, angle, shotPower);
+                    hud.UpdatePopUp(angle, shotPower);
                 }
                 else
                     hud.DisablePopUp();
@@ -48,6 +48,7 @@ public class InputManager : MonoBehaviour {
             {
                 snapPosition = Input.mousePosition;//varia a força e angulo baseado
                 hasSnap = true;                     //em onde a pessoa clicou
+                hud.CreatePopUp(snapPosition);
             }
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
