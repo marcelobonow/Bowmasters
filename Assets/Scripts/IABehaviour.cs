@@ -33,7 +33,7 @@ public class IABehaviour : MonoBehaviour {
         for (totalVelocity = 4; totalVelocity <= 20; totalVelocity++)
         {
             angle = 0;
-            for (angle = 0; angle < 1;)//adicionar raycast
+            for (angle = 0; angle < 1;)
             {
                 angle += precison;
                 horizontalVelocity = totalVelocity * Mathf.Cos(angle);

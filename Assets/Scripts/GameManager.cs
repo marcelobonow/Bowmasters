@@ -95,10 +95,6 @@ public class GameManager : MonoBehaviour
     {
         angle = _angle;
     }
-    public static void SetShotPower(float _shotPower)
-    {
-        shotPower = _shotPower;
-    }
     public void SetStage(Stage _stage)
     {
         stage = _stage;

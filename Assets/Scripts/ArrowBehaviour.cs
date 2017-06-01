@@ -10,6 +10,7 @@ public class ArrowBehaviour : MonoBehaviour {
     private void Start()
     {
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
+        
     }
 
     void FixedUpdate () {
