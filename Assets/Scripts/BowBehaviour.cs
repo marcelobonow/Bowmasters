@@ -10,12 +10,6 @@ public class BowBehaviour : MonoBehaviour {
     private float[] arrowPositions;
     [SerializeField]
     private float bowAngle;
-    [SerializeField]
-    private Sprite actualSprite;
-
-    void Start () {
-        actualSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
-	}
 
     public void SetBow(int _position)
     {

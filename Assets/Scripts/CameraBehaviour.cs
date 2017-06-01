@@ -5,7 +5,7 @@ public class CameraBehaviour : MonoBehaviour {
 
     private const float ZCAMERA = -10;
 
-    public static bool inPosition;
+    private bool inPosition;
 
     [SerializeField]
     private GameObject arrow; //referencia a arrow que o GameManager possui
@@ -13,6 +13,8 @@ public class CameraBehaviour : MonoBehaviour {
     private Transform startPointPlayer;
     [SerializeField]
     private Transform startPointEnemy;
+    [SerializeField]
+    private float moveTimer;
 
     private void Start()
     {
@@ -30,26 +32,27 @@ public class CameraBehaviour : MonoBehaviour {
         //se esta em um dos turnos de mirar do player ou do inimigo a camera vai para as posições pre-definidas
         else if(GameManager.staticStage == GameManager.Stage.Player && !inPosition)
         {
-            inPosition = true;
-            StartCoroutine(SmoothFollow(startPointPlayer.transform.position));
+            SmoothFollow(startPointPlayer.transform.position);
         }
         else if(GameManager.staticStage == GameManager.Stage.Enemy && !inPosition)
         {
-            inPosition = true;
-            StartCoroutine(SmoothFollow(startPointEnemy.transform.position));
+            SmoothFollow(startPointEnemy.transform.position);
+        }
+        if (inPosition == true && Camera.main.orthographicSize >= 3 && Camera.main.orthographicSize <3.2)
+        {
+            GameManager.enemyCanShot = true;
         }
 	}
-    IEnumerator SmoothFollow(Vector2 position)
-    {
-        float moveTimer = 0;
-        while(moveTimer<1)
+    void SmoothFollow(Vector2 position)
+    { 
+        moveTimer += Time.fixedDeltaTime;
+        transform.position = new Vector3(Mathf.Lerp(transform.position.x, position.x, moveTimer / 50),
+                Mathf.Lerp(transform.position.y, position.y, moveTimer / 50), ZCAMERA);
+        if(moveTimer > 5)
         {
-            moveTimer += Time.deltaTime;
-            transform.position = new Vector3(Mathf.Lerp(transform.position.x, position.x, moveTimer / 10),
-                Mathf.Lerp(transform.position.y, position.y, moveTimer / 10), ZCAMERA);
-            yield return new WaitForEndOfFrame();
+            moveTimer = 0;
+            GameManager.cameraInPosition = true;
+            inPosition = true;
         }
-        GameManager.enemyCanShoot = true;
-        inPosition = true;
     }
 }

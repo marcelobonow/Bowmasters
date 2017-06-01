@@ -42,7 +42,6 @@ public class InputManager : MonoBehaviour {
                 if(GameManager.shotPower >= 2)
                 {
                     gameManager.SetStage(GameManager.Stage.playershot); // Passagem da rodada de jogador atirar para tiro do jogador
-                    GameManager.arrow.GetComponent<ArrowBehaviour>().enabled = true;
                     ShootingBehaviour.Shot(GameManager.shotPower, GameManager.angle, GameManager.arrow);
                 }
             }

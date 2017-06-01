@@ -11,16 +11,15 @@ public class IABehaviour : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        if(GameManager.enemyCanShoot && gameManager.GetStage() == GameManager.Stage.Enemy)
+        if(GameManager.cameraInPosition && GameManager.enemyCanShot && gameManager.GetStage() == GameManager.Stage.Enemy)
         {
-            //Debug.Log("Entrou");
-            GameManager.enemyCanShoot = false;
+            GameManager.enemyCanShot = false;
             StartCoroutine(Aim(Player.transform.position,20));
-            //ShootingBehaviour.Shot(shotpower,);
-            //gameManager.SetStage(GameManager.Stage.Player);
+            StartCoroutine(BowDrawAnimation());
+
         }
     }
-    IEnumerator Aim(Vector3 playerPosition, float TotalVelocity, float precison = 0.1f)
+    IEnumerator Aim(Vector3 playerPosition, float TotalVelocity, float precison = 0.01f)
     {
         float i = 0;
         float distance = Vector3.Distance(gameObject.transform.position,playerPosition);
@@ -40,11 +39,20 @@ public class IABehaviour : MonoBehaviour {
                 //Debug.Log("time: " + time);
                 //Debug.Log("Vertical Velocity: " + verticalVelocity);
                 //Debug.Log("Distance: " + distance);
-                //Debug.Log("Angle: " + angle);
+                Debug.Log("Angle: " + angle*Mathf.Rad2Deg);
                 break;
             }
-            yield return new WaitForSeconds(0.02f);
+            if(i % 30 == 0)
+            {
+                yield return new WaitForSeconds(0.2f);
+            }
         }
-        //ShootingBehaviour.Shot(TotalVelocity, angle, GameManager.arrow);
+        ShootingBehaviour.Shot(TotalVelocity, (angle*Mathf.Rad2Deg+90), GameManager.arrow);
+        gameManager.SetStage(GameManager.Stage.EnemyShot);
+    }
+    IEnumerator BowDrawAnimation() //Poderia ser feito numa animação (usando o animator) porém como ja tenho tudo pronto
+                                   //por causa do player, decidi fazer por código
+    {
+        yield return new WaitForSeconds(0.5f);
     }
 }

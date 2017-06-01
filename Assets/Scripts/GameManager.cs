@@ -10,8 +10,8 @@ public class GameManager : MonoBehaviour
     public static GameObject arrow;
     public static float angle;
     public static float shotPower;
-    public static bool enemyCanShoot; //É colocada como verdadeira quando a camera esta em posição e quando o player estiver setado
-
+    public static bool cameraInPosition; //É colocada como verdadeira quando a camera esta em posição e quando o player estiver setado
+    public static bool enemyCanShot;
     [SerializeField]
     private GameObject playerArrow;   //Pode ser um vetor de flechas diferentes, com danos diferentes, por exemplo
     [SerializeField]
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     public void SetPlayer()
     {
         arrow = playerArrow;
-        enemyCanShoot = false;
+        cameraInPosition = false;
         arrow = Instantiate(arrow);
         GameObject playerBow = GameObject.Find("PlayerBow");
         playerBow.transform.eulerAngles = new Vector3(0, 0, 0);
@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
         arrow.transform.SetParent(enemyBow.transform);
         arrow.GetComponent<ArrowBehaviour>().gameManager = this;
         arrow.GetComponent<ArrowBehaviour>().enabled = true;
-        bowBehaviour.SetBow(0);
+        enemyBow.GetComponent<BowBehaviour>().SetBow(0);
         InputManager.hasSnap = false;
         timer = 0;
     }
@@ -110,6 +110,8 @@ public class GameManager : MonoBehaviour
     {
         if (_stage == Stage.Player)
             SetPlayer();
+        if (_stage == Stage.Enemy)
+            SetEnemy();
         stage = _stage;
         staticStage = stage;
     }
