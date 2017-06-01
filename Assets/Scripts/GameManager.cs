@@ -79,10 +79,7 @@ public class GameManager : MonoBehaviour
     }
     public static void SetAngle(float _angle)
     {
-        if (_angle < Mathf.PI)
-        {
-            angle = _angle;
-        }
+        angle = _angle;
     }
     public static void SetShotPower(float _shotPower)
     {
