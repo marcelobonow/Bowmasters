@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class HUDManager : MonoBehaviour
 {
-
     [SerializeField]
     private Text angleText;
     [SerializeField]
@@ -19,7 +18,10 @@ public class HUDManager : MonoBehaviour
     {
         RectTransform rectTransform = popUp.GetComponent<RectTransform>();
         Debug.Log(position.y + rectTransform.rect.height);
+        //Por padrão o valor é setado ao valor passado
         rectTransform.position = position;
+        //Esse bloco de if/else if verifica se algum valor esta fora da tela, se estiver,
+        //ele o corrige para dentro da tela
         if ((position.x - rectTransform.rect.width / 2) < 0)
         {
             rectTransform.position = new Vector2(rectTransform.rect.width / 2 + 3, rectTransform.position.y);
@@ -30,7 +32,6 @@ public class HUDManager : MonoBehaviour
         }
         if ((position.y + rectTransform.rect.height / 2 + 3) > Screen.height)
         {
-            //Se o popup estiver muito em cima, o script o fará visivel
             rectTransform.position = new Vector2(rectTransform.position.x,Screen.height - (rectTransform.rect.height / 2 + 3));
         }
         else if ((position.y - rectTransform.rect.height / 2) < 0)
