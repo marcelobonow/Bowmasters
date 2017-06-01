@@ -44,9 +44,10 @@ public class CameraBehaviour : MonoBehaviour
     void SmoothFollow(Vector2 position)
     {
         moveTimer += Time.fixedDeltaTime;
+        Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 3, moveTimer / 20);
         transform.position = new Vector3(Mathf.Lerp(transform.position.x, position.x, moveTimer / 50),
                 Mathf.Lerp(transform.position.y, position.y + 1, moveTimer / 50), ZCAMERA);//offset nara camera, para não mostrar tanto chão
-        if (moveTimer > 5)
+        if (moveTimer > 4)
         {
             moveTimer = 0;
             GameManager.cameraInPosition = true;

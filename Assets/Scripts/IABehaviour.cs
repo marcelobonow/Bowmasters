@@ -13,25 +13,14 @@ public class IABehaviour : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        if(GameManager.enemyCanShot == true)
+        if(GameManager.enemyCanShot == true && GameManager.cameraInPosition)
         {
             bow = GameObject.Find("EnemyBow").GetComponent<BowBehaviour>();
             hasFinished = false;
             GameManager.enemyCanShot = false;
-            StartCoroutine(BowDrawAnimation());
             StartCoroutine(Aim(Player.transform.position));
 
         }
-    }
-    IEnumerator BowDrawAnimation() //Poderia ser feito numa animação (usando o animator) porém como ja tenho tudo pronto
-                                   //por causa do player, decidi fazer por código
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            bow.SetBowPosition(i);
-            yield return new WaitForSeconds(0.5f);
-        }
-        hasFinished = true;
     }
     IEnumerator Aim(Vector3 playerPosition, float precison = 0.002f)
     {
@@ -40,10 +29,11 @@ public class IABehaviour : MonoBehaviour {
         float time = 0;
         float horizontalVelocity=0;
         int totalVelocity;
-        for (totalVelocity = 5; totalVelocity < 20; totalVelocity++)
+        float animationTimer = 0;
+        for (totalVelocity = 4; totalVelocity <= 20; totalVelocity++)
         {
             angle = 0;
-            for (angle = 0; angle < 0.8;)//adicionar raycast
+            for (angle = 0; angle < 1;)//adicionar raycast
             {
                 angle += precison;
                 horizontalVelocity = totalVelocity * Mathf.Cos(angle);
@@ -58,18 +48,20 @@ public class IABehaviour : MonoBehaviour {
                     break;
                 }
             }
-            if (Mathf.Round(totalVelocity) % 2 == 0)
-            {
                 bow.SetBowRotation(90+(angle * Mathf.Rad2Deg));
-                yield return new WaitForSeconds(0.2f);
-            }
             if (time > (distance / horizontalVelocity))
             {
                 break;
             }
         }
-        while (!hasFinished)
-            yield return new WaitForSeconds(1f);
+        while(animationTimer < 1)
+        {
+            animationTimer += 0.03f;
+            Camera.main.orthographicSize = Mathf.Lerp(3, totalVelocity / 8f + 3, animationTimer);
+            bow.SetBowRotation(Mathf.Lerp(180, 180 - (angle*Mathf.Rad2Deg), animationTimer));
+            bow.SetBowPosition(Mathf.FloorToInt(4 * animationTimer + 1));
+            yield return new WaitForSeconds(0.03f);
+        }
         Debug.Log(totalVelocity);
         ShootingBehaviour.Shot(totalVelocity, (180 - angle * Mathf.Rad2Deg), GameManager.arrow);
         gameManager.SetStage(GameManager.Stage.EnemyShot);

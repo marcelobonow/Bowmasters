@@ -30,9 +30,10 @@ public class InputManager : MonoBehaviour {
                 //Angulo é calculado pela diferença no eixo y e a força na diferença do eixo x
                 Vector3 newMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 float angle = (snapPosition.y - newMousePosition.y) * 20; //mudar depois
-                float shotPower = (snapPosition.x - newMousePosition.x)*20;
+                float shotPower = Mathf.Abs((snapPosition.x - newMousePosition.x)*4f);
                 if (shotPower > 20)
                     shotPower = 20;
+                Camera.main.orthographicSize = (shotPower/8f)+ 3;
                 GameManager.SetAngle(angle);
                 GameManager.SetShotPower(shotPower);
             }

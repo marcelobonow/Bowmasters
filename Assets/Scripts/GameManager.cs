@@ -62,7 +62,6 @@ public class GameManager : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        SetZoom(stage);
         if (InputManager.hasSnap && stage == Stage.Player)
         {
             if (shotPower < 1)
@@ -77,26 +76,10 @@ public class GameManager : MonoBehaviour
                 bowBehaviour.SetBowPosition(4);
             bowBehaviour.SetBowRotation(angle);
         }
-
-
-    }
-    //passar para o inputManager
-    public void SetZoom(Stage stage)
-    {
-        if (stage == Stage.playershot)//Provavelmente vá precisar de mudanças
-        {
-            timer += Time.deltaTime;
-            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 10, timer / 15);
-        }
-        if (stage == Stage.Enemy)
-        {
-            timer += Time.deltaTime;
-            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 3, timer / 15);
-        }
     }
     public static void SetAngle(float _angle)
     {
-        if (_angle < 90)
+        if (_angle < 180)
         {
             angle = _angle;
         }
