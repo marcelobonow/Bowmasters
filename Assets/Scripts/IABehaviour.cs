@@ -58,7 +58,6 @@ public class IABehaviour : MonoBehaviour {
             bow.SetBowPosition(Mathf.FloorToInt(4 * animationTimer + 1));
             yield return new WaitForSeconds(0.03f);
         }
-        Debug.Log(totalVelocity);
         ShootingBehaviour.Shot(totalVelocity, (Mathf.PI - angle), GameManager.arrow);
         GameManager.cameraInPosition = false;
         gameManager.SetStage(GameManager.Stage.EnemyShot);

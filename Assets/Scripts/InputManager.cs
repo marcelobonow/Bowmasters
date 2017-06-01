@@ -36,7 +36,7 @@ public class InputManager : MonoBehaviour {
                 Camera.main.orthographicSize = (shotPower/8f)+ 3;
                 GameManager.SetAngle(angle);
                 GameManager.SetShotPower(shotPower);
-                if (GameManager.shotPower >= 2)
+                if (shotPower >= 2)
                 {
                     hud.EnablePopUp();
                     hud.UpdatePopUp(angle, shotPower);

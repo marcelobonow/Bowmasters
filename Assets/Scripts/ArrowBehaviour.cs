@@ -1,5 +1,4 @@
-﻿using UnityEngine.SceneManagement;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ArrowBehaviour : MonoBehaviour {
 
@@ -32,7 +31,7 @@ public class ArrowBehaviour : MonoBehaviour {
         if(collision.CompareTag("Player")||collision.CompareTag("Enemy"))
         {
             collision.GetComponent<Rigidbody2D>().velocity = new Vector2(rigidBody.velocity.x/30,0);
-            SceneManager.LoadScene(0);
+            collision.GetComponent<Player>().TakeDamage(gameObject.GetComponent<Arrow>().damage);
         }
         transform.position += new Vector3(0.1f, -0.1f); //Enterra a flecha no alvo
         rigidBody.velocity = new Vector2(0, 0);

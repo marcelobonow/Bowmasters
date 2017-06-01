@@ -1,4 +1,5 @@
 ﻿using UnityStandardAssets.CrossPlatformInput;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -35,34 +36,6 @@ public class GameManager : MonoBehaviour
         SetPlayer();
     }
 
-    public void SetPlayer()
-    {
-        arrow = playerArrow;
-        cameraInPosition = false;
-        enemyCanShot = false;
-        arrow = Instantiate(arrow);
-        GameObject playerBow = GameObject.Find("PlayerBow");
-        playerBow.transform.eulerAngles = new Vector3(0, 0, 0);
-        arrow.transform.SetParent(playerBow.transform);
-        arrow.GetComponent<ArrowBehaviour>().gameManager = this;
-        arrow.GetComponent<ArrowBehaviour>().enabled = true;
-        playerBow.GetComponent<BowBehaviour>().SetBowPosition(0);
-        InputManager.hasSnap = false;
-        timer = 0;
-    }
-    public void SetEnemy()
-    {
-        arrow = enemyArrow;
-        arrow = Instantiate(arrow);
-        GameObject enemyBow = GameObject.Find("EnemyBow");
-        enemyBow.transform.eulerAngles = new Vector3(0, 0, 180);
-        arrow.transform.SetParent(enemyBow.transform);
-        arrow.GetComponent<ArrowBehaviour>().gameManager = this;
-        arrow.GetComponent<ArrowBehaviour>().enabled = true;
-        enemyBow.GetComponent<BowBehaviour>().SetBowPosition(0);
-        InputManager.hasSnap = false;
-        timer = 0;
-    }
     private void FixedUpdate()
     {
         if (InputManager.hasSnap && stage == Stage.Player)
@@ -79,6 +52,44 @@ public class GameManager : MonoBehaviour
                 bowBehaviour.SetBowPosition(4);
             bowBehaviour.SetBowRotation(angle);
         }
+    }
+    public void SetPlayer()
+    {
+        arrow = playerArrow;
+        cameraInPosition = false;
+        enemyCanShot = false;
+        arrow = Instantiate(arrow);
+        arrow.AddComponent<Arrow>().damage = 5;
+        GameObject playerBow = GameObject.Find("PlayerBow");
+        playerBow.transform.eulerAngles = new Vector3(0, 0, 0);
+        arrow.transform.SetParent(playerBow.transform);
+        arrow.GetComponent<ArrowBehaviour>().gameManager = this;
+        arrow.GetComponent<ArrowBehaviour>().enabled = true;
+        playerBow.GetComponent<BowBehaviour>().SetBowPosition(0);
+        InputManager.hasSnap = false;
+        timer = 0;
+    }
+    public void SetEnemy()
+    {
+        arrow = enemyArrow;
+        arrow = Instantiate(arrow);
+        arrow.AddComponent<Arrow>().damage = 5;
+        GameObject enemyBow = GameObject.Find("EnemyBow");
+        enemyBow.transform.eulerAngles = new Vector3(0, 0, 180);
+        arrow.transform.SetParent(enemyBow.transform);
+        arrow.GetComponent<ArrowBehaviour>().gameManager = this;
+        arrow.GetComponent<ArrowBehaviour>().enabled = true;
+        enemyBow.GetComponent<BowBehaviour>().SetBowPosition(0);
+        InputManager.hasSnap = false;
+        timer = 0;
+    }
+    public static void Die(string looser)
+    {
+        if (looser == "Player")
+            Debug.Log("You loose");
+        else
+            Debug.Log("You Win");
+        SceneManager.LoadScene(0);
     }
     public static void SetAngle(float _angle)
     {
