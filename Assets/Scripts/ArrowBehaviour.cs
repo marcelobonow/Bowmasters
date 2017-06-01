@@ -30,6 +30,10 @@ public class ArrowBehaviour : MonoBehaviour {
 	}
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if(collision.CompareTag("Player")||collision.CompareTag("Enemy"))
+        {
+            collision.GetComponent<Rigidbody2D>().velocity = new Vector2(rigidBody.velocity.x/30,0);
+        }
         transform.position += new Vector3(0.1f, -0.1f); //Enterra a flecha no alvo
         rigidBody.velocity = new Vector2(0, 0);
         rigidBody.simulated = false;
@@ -46,14 +50,7 @@ public class ArrowBehaviour : MonoBehaviour {
             gameManager.SetPlayer();
         }
         RemoveComponents();
-        if(collision.CompareTag("Player"))
-        {
-            collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(-10f, 0));
-        }
-        if(collision.CompareTag("Enemy"))
-        {
-            collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(10f, 0));
-        }
+        
     }
     private void RemoveComponents()
     {

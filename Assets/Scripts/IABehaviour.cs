@@ -64,6 +64,7 @@ public class IABehaviour : MonoBehaviour {
         }
         Debug.Log(totalVelocity);
         ShootingBehaviour.Shot(totalVelocity, (180 - angle * Mathf.Rad2Deg), GameManager.arrow);
+        GameManager.cameraInPosition = false;
         gameManager.SetStage(GameManager.Stage.EnemyShot);
     }
 }
