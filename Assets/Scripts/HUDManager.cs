@@ -1,14 +1,15 @@
-﻿using UnityEngine.UI;
+﻿//Script responsavel pelo controle da janela que aparece quando o player mirar, que lhe informa o angulo e a força
+using UnityEngine.UI;
 using UnityEngine;
 
 public class HUDManager : MonoBehaviour
 {
     [SerializeField]
-    private Text angleText;
+    private Text angleText; //Text onde irá o valor atual do angulo
     [SerializeField]
-    private Text powerText;
+    private Text powerText; //Text onde irá o valor atual da força
     [SerializeField]
-    private GameObject popUp;
+    private GameObject popUp; //Prefab do popUp
 
     private void Start()
     {

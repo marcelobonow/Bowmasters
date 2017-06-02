@@ -13,7 +13,9 @@ public class BowBehaviour : MonoBehaviour {
 
     public void SetBowPosition(int _position)
     {
-
+        /*como ha a possibilidade de se usar um sprite com mais posições (que seria uma melhoria bem interessante
+         *pois o atual possui apenas 5), é importante que haja uma verificação de sprite esta tentando se acessar
+         *para ter certeza que ele esta dentro das quantidades de sprites */
         if (_position >= 0 && _position < bowPositions.Length)
         {
             gameObject.GetComponent<SpriteRenderer>().sprite = bowPositions[_position];
@@ -22,6 +24,6 @@ public class BowBehaviour : MonoBehaviour {
     }
     public void SetBowRotation(float _angle)
     {
-        transform.eulerAngles = new Vector3(0, 0, _angle*Mathf.Rad2Deg);
+        transform.eulerAngles = new Vector3(0, 0, _angle*Mathf.Rad2Deg); //eulerAngles usa deg e mathf retorna em rad
     }
 }
