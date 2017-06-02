@@ -12,7 +12,9 @@ public class Player : MonoBehaviour {
     //Imagem que se refere a sua vida, isso permite que a barra de vida estejam diretamente correlacionados, e que certos
     //personagens tenham barras de vida diferentes
     [SerializeField]
-    private Image healthImage;      
+    private Image healthImage;
+    [SerializeField]
+    private GameManager gameManager;
     
 
     public void TakeDamage(float _damage)
@@ -21,7 +23,7 @@ public class Player : MonoBehaviour {
         if (health <= 0)
         {
             health = 0;
-            GameManager.Die(gameObject.name);
+            gameManager.Die(gameObject.name);
         }
         healthImage.fillAmount = health / maxHealth;//Coloca o fill amount a mesma porcentagem de vida atual 
     }

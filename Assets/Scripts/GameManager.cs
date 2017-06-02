@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     private BowBehaviour bowBehaviour; //Muda entre o bow do player e do inimigo
     [SerializeField]
     private IABehaviour iaBehaviour;
+    [SerializeField]
+    private UIManager uiManager; //Objeto do UIManager para colocar tela de vitoria ou tela de derrota
     private static Stage stage;
 
 
@@ -89,14 +91,19 @@ public class GameManager : MonoBehaviour
         enemyBow.GetComponent<BowBehaviour>().SetBowPosition(0);
         InputManager.hasSnap = false;
     }
-    public static void Die(string looser)
+
+    public void Die(string looser)
     {
         if (looser == "Player")
-            Debug.Log("You loose");
-        //Aqui aconteceria uma animação do player morrendo e de uma tela de derrota
+        {
+            SceneManager.LoadScene(1);
+            //Aqui aconteceria uma animação do player morrendo
+        }
         else
-            Debug.Log("You Win");
-        //Aqui aconteceria uma animação do inimigo morrendo e de uma tela de vitoria
+        {
+            SceneManager.LoadScene(2);
+        }
+        //Aqui aconteceria uma animação do inimigo morrendo
         SceneManager.LoadScene(0);
     }
     /*Metodos Set e Get foram usados principalmente para Debugar onde havia maior probabilidade de erro
