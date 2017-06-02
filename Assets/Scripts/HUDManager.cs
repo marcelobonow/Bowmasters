@@ -39,15 +39,18 @@ public class HUDManager : MonoBehaviour
             rectTransform.position = new Vector2(rectTransform.position.x,rectTransform.rect.height / 2 + 3);
         }
     }
+    //Mostra no PopUp os valores do angulo e da força
     public void UpdatePopUp(float _angle, float _power)
     {
         angleText.text = Mathf.Round((_angle * Mathf.Rad2Deg)).ToString() + "°";
         powerText.text = _power.ToString();
     }
+    //PopUp visivel
     public void EnablePopUp()
     {
         popUp.SetActive(true);
     }
+    //Pop não visivel
     public void DisablePopUp()
     {
         popUp.SetActive(false);

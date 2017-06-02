@@ -6,9 +6,9 @@ public class InputManager : MonoBehaviour {
 
     [SerializeField]
     private Vector3 snapPosition;
-    public static bool hasSnap;
+    public static bool hasSnap; //Forma de identificação de que o player esta mirando
     [SerializeField]
-    HUDManager hud;
+    HUDManager hud; //objeto do HUD para criar, atualizar e desabilitar popUp
 
     void Start () {
         hasSnap = false;
@@ -23,17 +23,17 @@ public class InputManager : MonoBehaviour {
             {
                 //Angulo é calculado pela diferença no eixo y e a força na diferença do eixo x
                 Vector3 newMousePosition = Input.mousePosition;
-                float angle = (snapPosition.y - newMousePosition.y)/200;
+                float angle = (snapPosition.y - newMousePosition.y)/200; //diferença no eixo y é o angulo
                 if(angle > Mathf.PI)
                 {
                     angle = Mathf.PI;
                 }
-                float shotPower = Mathf.Abs((snapPosition.x - newMousePosition.x)/20);
+                float shotPower = Mathf.Abs((snapPosition.x - newMousePosition.x)/20);//diferença no eixo x é a força do tiro
                 if (shotPower > 20)
                     shotPower = 20;
-                Camera.main.orthographicSize = (shotPower/8f)+ 3;
+                Camera.main.orthographicSize = (shotPower/8f)+ 3; //Afasta a camera de acordo com a força do tiro
                 GameManager.SetAngle(angle);
-                GameManager.shotPower = shotPower;
+                GameManager.shotPower = shotPower;//Guarda a força do tiro no GameManager
                 if (shotPower >= 2)
                 {
                     hud.EnablePopUp();
@@ -42,16 +42,16 @@ public class InputManager : MonoBehaviour {
                 else
                     hud.DisablePopUp();
             }
-            if (!hasSnap && CrossPlatformInputManager.GetButtonDown("Fire1"))
+            if (!hasSnap && CrossPlatformInputManager.GetButtonDown("Fire1")) //Começou a mirar
             {
-                snapPosition = Input.mousePosition;//varia a força e angulo baseado
-                hasSnap = true;                     //em onde a pessoa clicou
+                snapPosition = Input.mousePosition;//varia a força e angulo baseado em onde a pessoa clicou
+                hasSnap = true;                    //Player está mirando
                 hud.CreatePopUp(snapPosition);
             }
-            if (CrossPlatformInputManager.GetButtonUp("Fire1"))
+            if (CrossPlatformInputManager.GetButtonUp("Fire1"))//Player deixou de mirar
             {
                 hasSnap = false;
-                if(GameManager.shotPower >= 2)
+                if(GameManager.shotPower >= 2)//Se o tiro for muito fraco a flecha não é disparada
                 {
                     GameManager.SetStage(GameManager.Stage.playershot); // Passagem da rodada de jogador atirar para tiro do jogador
                     GameManager.cameraInPosition = false;

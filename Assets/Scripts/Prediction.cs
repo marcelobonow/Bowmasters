@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Prediction : MonoBehaviour {
     [SerializeField]
-    private GameObject previewPrefab;
+    private GameObject previewPrefab; //GameObject contendo a sprite com tamanho correto da bola que compõe a previsão de tiro
     [SerializeField]
     private Transform previewStartPosition;
     [SerializeField]
@@ -17,12 +17,15 @@ public class Prediction : MonoBehaviour {
         for(int i = 0; i < 10; i++)
         {
             GameObject tempPreview = Instantiate(previewPrefab);
-            tempPreview.name = i.ToString();
+            tempPreview.name = i.ToString(); //Coloca se o nome como i para que se possa verificar no inspector qual é cada objeto
             previews.Add(tempPreview);
         }
     }
 
     void FixedUpdate () {
+        //Este código só sera executado se o jogador estiver mirando, há a possibilidaded e habilitar este código quando
+        //o jogador mirar, e desativar quando ele atirar. Para isto é necessários mudanças neste código e mudanças no código
+        //do Input Manager, e também será necessário passar o uma instancia desta classe para o InputManager;
 		if(InputManager.hasSnap)
         {
             float horizontalSpeed;
