@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class IABehaviour : MonoBehaviour {
+    [Header("IA Configuration")]
 
     [SerializeField]
     private GameManager gameManager;
@@ -10,6 +10,8 @@ public class IABehaviour : MonoBehaviour {
     private GameObject Player;
     private BowBehaviour bow;
     private bool hasFinished;
+    [SerializeField][Range(0,0.2f)]
+    private float erro = 0.1f; //Porcentagem de erro da IA, neste caso o padrão é 10%
 
     private void FixedUpdate()
     {
@@ -39,7 +41,7 @@ public class IABehaviour : MonoBehaviour {
                 horizontalVelocity = totalVelocity * Mathf.Cos(angle);
                 float verticalVelocity = totalVelocity * Mathf.Sin(angle);
                 time = -(verticalVelocity * 2 / Physics.gravity.y); //Gravidade no unity no eixo y = -9.8
-                if (time > (distance / horizontalVelocity))
+        if (time > (distance / horizontalVelocity))
                 {
                     break;
                 }
@@ -58,7 +60,7 @@ public class IABehaviour : MonoBehaviour {
             bow.SetBowPosition(Mathf.FloorToInt(4 * animationTimer + 1));
             yield return new WaitForSeconds(0.03f);
         }
-        ShootingBehaviour.Shot(totalVelocity, (Mathf.PI - angle), GameManager.arrow);
+        ShootingBehaviour.Shot(totalVelocity + totalVelocity*Random.Range(-erro,erro), (Mathf.PI - angle) + (Mathf.PI-angle)*Random.Range(-erro,erro), GameManager.arrow);
         GameManager.cameraInPosition = false;
         gameManager.SetStage(GameManager.Stage.EnemyShot);
     }
