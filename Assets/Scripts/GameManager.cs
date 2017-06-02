@@ -1,4 +1,10 @@
-﻿using UnityStandardAssets.CrossPlatformInput;
+﻿/* O Gamemanager funciona em estágios, o jogo possui o estagio de player mirando, player atirando, inimigo mirando,
+ * inimigo atirando, e volta para player mirando. Esta ordem é fixa como numa lista encadeada. A mudança de PlayerAim
+ * para PlayerShot se da quando o player atira, ou seja, o playershot acontece após o tiro,
+ * e dura até que a flecha colida com algo. Nesse momento o estágio do jogo passa para EnemyAim, quando a inteligencia
+ * artificial terminar de calcular e realizar a animação, o inimigo irá atirar, passando o estágio do jogo para EnemyShot
+ * e, quando esta flecha acertar algo, voltamos para o playerAim
+ */
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
@@ -6,7 +12,7 @@ public class GameManager : MonoBehaviour
 {
     public enum Stage
     {
-        Player, playershot, Enemy, EnemyShot
+        PlayerAim, playershot, EnemyAim, EnemyShot
     }
     public static GameObject arrow;
     public static float angle;
@@ -18,28 +24,27 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject enemyArrow;
     [SerializeField]
-    private GameManager gameManager;
-    [SerializeField]
-    private float timer;
+    private GameManager gameManager; //pode ser deixar de ser serializado se no start localizar o GameManager
     [SerializeField]
     private BowBehaviour bowBehaviour; //Muda entre o bow do player e do inimigo
     [SerializeField]
     private IABehaviour iaBehaviour;
-    public static Stage staticStage; //Static é apenas para leitura
-    private Stage stage; //enquanto este é para a escrita
+    private static Stage stage; //Privado
 
 
     private void Awake()
     {
-        stage = Stage.Player;
-        staticStage = stage;
+        stage = Stage.PlayerAim;//Inicia do estagio do player mirando
+        stage = stage;
         SetPlayer();
     }
 
     private void FixedUpdate()
     {
-        if (InputManager.hasSnap && stage == Stage.Player)
+        //todo fixed update muda o sprite do arco de acordo com a força, e rotaciona o arco de acordo com o angulo da mira atual
+        if (InputManager.hasSnap && stage == Stage.PlayerAim)
         {
+            bowBehaviour.SetBowRotation(angle);
             if (shotPower < 1)
                 bowBehaviour.SetBowPosition(0);
             else if (shotPower >= 1 && shotPower < 5)
@@ -50,9 +55,9 @@ public class GameManager : MonoBehaviour
                 bowBehaviour.SetBowPosition(3);
             else
                 bowBehaviour.SetBowPosition(4);
-            bowBehaviour.SetBowRotation(angle);
         }
     }
+    //Coloca o player na posição de tiro
     public void SetPlayer()
     {
         arrow = playerArrow;
@@ -61,14 +66,16 @@ public class GameManager : MonoBehaviour
         arrow = Instantiate(arrow);
         arrow.AddComponent<Arrow>().damage = 5;
         GameObject playerBow = GameObject.Find("PlayerBow");
+        //Reseta a rotação do arco, se não ele vai ter a rotação de quando atirou
         playerBow.transform.eulerAngles = new Vector3(0, 0, 0);
         arrow.transform.SetParent(playerBow.transform);
+        //a flecha precisa do gameManager para mudar o estagio e resetar para posição de tiro o player e o inimigo
         arrow.GetComponent<ArrowBehaviour>().gameManager = this;
         arrow.GetComponent<ArrowBehaviour>().enabled = true;
         playerBow.GetComponent<BowBehaviour>().SetBowPosition(0);
         InputManager.hasSnap = false;
-        timer = 0;
     }
+    //Coloca o inimigo na posição de tiro
     public void SetEnemy()
     {
         arrow = enemyArrow;
@@ -81,26 +88,29 @@ public class GameManager : MonoBehaviour
         arrow.GetComponent<ArrowBehaviour>().enabled = true;
         enemyBow.GetComponent<BowBehaviour>().SetBowPosition(0);
         InputManager.hasSnap = false;
-        timer = 0;
     }
     public static void Die(string looser)
     {
         if (looser == "Player")
             Debug.Log("You loose");
+        //Aqui aconteceria uma animação do player morrendo e de uma tela de derrota
         else
             Debug.Log("You Win");
+        //Aqui aconteceria uma animação do inimigo morrendo e de uma tela de vitoria
         SceneManager.LoadScene(0);
     }
+    /*Metodos Set e Get foram usados principalmente para Debugar onde havia maior probabilidade de erro
+    O correto seria todos os metodos privados com um Setter e getter, porém, como algumas variaveis são staticas
+    e alguns metodos também, seria fácil de perder a organização lógica*/
     public static void SetAngle(float _angle)
     {
         angle = _angle;
     }
-    public void SetStage(Stage _stage)
+    public static void SetStage(Stage _stage)
     {
         stage = _stage;
-        staticStage = stage;
     }
-    public Stage GetStage()
+    public static Stage GetStage()
     {
         return stage;
     }

@@ -63,6 +63,6 @@ public class IABehaviour : MonoBehaviour {
         //Adiciona erro tanto na velocidade do tiro quando no angulo de disparo.
         ShootingBehaviour.Shot(totalVelocity + totalVelocity*Random.Range(-erro,erro), (Mathf.PI - angle) + (Mathf.PI-angle)*Random.Range(-erro,erro), GameManager.arrow);
         GameManager.cameraInPosition = false;
-        gameManager.SetStage(GameManager.Stage.EnemyShot);
+        GameManager.SetStage(GameManager.Stage.EnemyShot);
     }
 }

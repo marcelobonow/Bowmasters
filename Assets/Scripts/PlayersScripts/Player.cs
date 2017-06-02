@@ -1,23 +1,28 @@
-﻿using UnityEngine.UI;
+﻿/* há no script a variavel nome que não é utilizado, porém, se houver mais personagens, pode-se mostrar o nome do personagem
+ * junto com a vida do player no HUD
+ */
+using UnityEngine.UI;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-    public Arrow arrow; //scripts que descendem deste terão um script que descende de arrow
-                        //ou seja, cada personagem tem suas caracteristicas e uma flecha com suas caracteristicas
+
     public string name = "Player";
     private float maxHealth = 15f;
     private float health = 15f;
+    //Imagem que se refere a sua vida, isso permite que a barra de vida estejam diretamente correlacionados, e que certos
+    //personagens tenham barras de vida diferentes
     [SerializeField]
-    private Image healthImage;      //Imagem que se refere a sua vida
+    private Image healthImage;      
+    
 
     public void TakeDamage(float _damage)
     {
-        health -= _damage;//delta sizebar
+        health -= _damage;
         if (health <= 0)
         {
             health = 0;
             GameManager.Die(gameObject.name);
         }
-        healthImage.fillAmount = health / maxHealth; 
+        healthImage.fillAmount = health / maxHealth;//Coloca o fill amount a mesma porcentagem de vida atual 
     }
 }

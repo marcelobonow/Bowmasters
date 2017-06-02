@@ -24,7 +24,7 @@ public class CameraBehaviour : MonoBehaviour
     void FixedUpdate()
     {
         arrow = GameManager.arrow;
-        if (GameManager.staticStage == GameManager.Stage.playershot || GameManager.staticStage == GameManager.Stage.EnemyShot)
+        if (GameManager.GetStage() == GameManager.Stage.playershot || GameManager.GetStage() == GameManager.Stage.EnemyShot)
         {
             //Se estiver em um dos turnos de tiro, a camera seguirá a flecha disparada
             transform.position = new Vector3(arrow.transform.position.x, arrow.transform.position.y, ZCAMERA);
@@ -32,11 +32,11 @@ public class CameraBehaviour : MonoBehaviour
         }
         
         //se esta em um dos turnos de mirar do player ou do inimigo a camera vai para as posições pre-definidas
-        if (GameManager.staticStage == GameManager.Stage.Player && !inPosition)
+        if (GameManager.GetStage() == GameManager.Stage.PlayerAim && !inPosition)
         {
             SmoothFollow(startPointPlayer.transform.position);
         }
-        if (GameManager.staticStage == GameManager.Stage.Enemy && !inPosition)
+        if (GameManager.GetStage() == GameManager.Stage.EnemyAim && !inPosition)
         {
             SmoothFollow(startPointEnemy.transform.position);
         }

@@ -8,8 +8,6 @@ public class InputManager : MonoBehaviour {
     private Vector3 snapPosition;
     public static bool hasSnap;
     [SerializeField]
-    private GameManager gameManager;
-    [SerializeField]
     HUDManager hud;
 
     void Start () {
@@ -19,7 +17,7 @@ public class InputManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (GameManager.staticStage == GameManager.Stage.Player)
+        if (GameManager.GetStage() == GameManager.Stage.PlayerAim)
         {
             if (hasSnap)
             {
@@ -55,7 +53,7 @@ public class InputManager : MonoBehaviour {
                 hasSnap = false;
                 if(GameManager.shotPower >= 2)
                 {
-                    gameManager.SetStage(GameManager.Stage.playershot); // Passagem da rodada de jogador atirar para tiro do jogador
+                    GameManager.SetStage(GameManager.Stage.playershot); // Passagem da rodada de jogador atirar para tiro do jogador
                     GameManager.cameraInPosition = false;
                     hud.DisablePopUp();
                     ShootingBehaviour.Shot(GameManager.shotPower, GameManager.angle, GameManager.arrow);

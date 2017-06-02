@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+﻿// O propósito deste script é de rotacionar o arco, e mostrar o sprite correlacionado com a força do tiro no momento
+
+using UnityEngine;
 
 public class BowBehaviour : MonoBehaviour {
 
     [SerializeField]
-    private Sprite[] bowPositions;
+    private Sprite[] bowPositions; //Sprites para cada nível de força
     [SerializeField]
-    private float[] arrowPositions;
+    private float[] arrowPositions; //Posições da flecha para cada posição da corda do arco
     [SerializeField]
     private float bowAngle;
 
