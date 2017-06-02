@@ -24,12 +24,12 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject enemyArrow;
     [SerializeField]
-    private GameManager gameManager; //pode ser deixar de ser serializado se no start localizar o GameManager
+    private GameManager gameManager; //pode deixar de ser serializado se no start localizar o GameManager
     [SerializeField]
     private BowBehaviour bowBehaviour; //Muda entre o bow do player e do inimigo
     [SerializeField]
     private IABehaviour iaBehaviour;
-    private static Stage stage; //Privado
+    private static Stage stage;
 
 
     private void Awake()

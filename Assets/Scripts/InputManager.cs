@@ -13,17 +13,15 @@ public class InputManager : MonoBehaviour {
     void Start () {
         hasSnap = false;
 	}
-	
-	// Update is called once per frame
 	void Update () {
 
         if (GameManager.GetStage() == GameManager.Stage.PlayerAim)
         {
             if (hasSnap)
             {
-                //Angulo é calculado pela diferença no eixo y e a força na diferença do eixo x
                 Vector3 newMousePosition = Input.mousePosition;
-                float angle = (snapPosition.y - newMousePosition.y)/200; //diferença no eixo y é o angulo
+                //Angulo é calculado pela diferença no eixo y e a força na diferença do eixo y
+                float angle = (snapPosition.y - newMousePosition.y)/200;
                 if(angle > Mathf.PI)
                 {
                     angle = Mathf.PI;

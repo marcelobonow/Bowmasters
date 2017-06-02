@@ -51,7 +51,7 @@ public class ArrowBehaviour : MonoBehaviour {
         if (GameManager.GetStage() == GameManager.Stage.EnemyShot)
         {
             GameManager.SetStage(GameManager.Stage.PlayerAim);
-            gameManager.SetPlayer(); //COloca o player na posição de mira
+            gameManager.SetPlayer(); //Cooca o player na posição de mira
         }
         RemoveComponents(); //Deixa apenas o transform e o sprite na flecha
         

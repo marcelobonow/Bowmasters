@@ -17,7 +17,7 @@ public class Prediction : MonoBehaviour {
         for(int i = 0; i < 10; i++)
         {
             GameObject tempPreview = Instantiate(previewPrefab);
-            tempPreview.name = i.ToString(); //Coloca se o nome como i para que se possa verificar no inspector qual é cada objeto
+            tempPreview.name = i.ToString(); //Coloca-se o nome como i para que se possa verificar no inspector qual é cada objeto
             previews.Add(tempPreview);
         }
     }

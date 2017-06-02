@@ -22,7 +22,6 @@ public class IABehaviour : MonoBehaviour {
             bow = GameObject.Find("EnemyBow").GetComponent<BowBehaviour>();
             GameManager.enemyCanShot = false;
             StartCoroutine(Aim(Player.transform.position));
-
         }
     }
     IEnumerator Aim(Vector3 playerPosition, float precison = 0.002f)
