@@ -32,3 +32,13 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+#Custom
+AssetBundles
+Build
+build
+Library
+library
+Temp
+temp
+package-lock.json
