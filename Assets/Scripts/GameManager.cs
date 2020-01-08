@@ -37,23 +37,22 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         stage = Stage.PlayerAim;//Inicia do estagio do player mirando
-        stage = stage;
         SetPlayer();
     }
 
     private void FixedUpdate()
     {
         //todo fixed update muda o sprite do arco de acordo com a força, e rotaciona o arco de acordo com o angulo da mira atual
-        if (InputManager.hasSnap && stage == Stage.PlayerAim)
+        if(InputManager.hasSnap && stage == Stage.PlayerAim)
         {
             bowBehaviour.SetBowRotation(angle);
-            if (shotPower < 1)
+            if(shotPower < 1)
                 bowBehaviour.SetBowPosition(0);
-            else if (shotPower >= 1 && shotPower < 5)
+            else if(shotPower >= 1 && shotPower < 5)
                 bowBehaviour.SetBowPosition(1);
-            else if (shotPower >= 5 && shotPower < 10)
+            else if(shotPower >= 5 && shotPower < 10)
                 bowBehaviour.SetBowPosition(2);
-            else if (shotPower >= 10 && shotPower < 15)
+            else if(shotPower >= 10 && shotPower < 15)
                 bowBehaviour.SetBowPosition(3);
             else
                 bowBehaviour.SetBowPosition(4);
@@ -94,7 +93,7 @@ public class GameManager : MonoBehaviour
 
     public void Die(string looser)
     {
-        if (looser == "Player")
+        if(looser == "Player")
         {
             SceneManager.LoadScene(1);
             //Aqui aconteceria uma animação do player morrendo
@@ -103,8 +102,6 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(2);
         }
-        //Aqui aconteceria uma animação do inimigo morrendo
-        SceneManager.LoadScene(0);
     }
     /*Metodos Set e Get foram usados principalmente para Debugar onde havia maior probabilidade de erro
     O correto seria todos os metodos privados com um Setter e getter, porém, como algumas variaveis são staticas
